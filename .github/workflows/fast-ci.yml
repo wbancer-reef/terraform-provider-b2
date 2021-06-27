@@ -14,7 +14,6 @@ env:
 
 jobs:
   build:
-    needs: lint
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -45,6 +44,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
   test_linux:
+    needs: build
     env:
       B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
       B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
