@@ -1,0 +1,50 @@
+name: Continuous Integration (fast)
+
+on:
+  push:
+    branches: [master, workflow-updates]
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: [master]
+
+env:
+  PYTHON_DEFAULT_VERSION: 3.9
+  GO_DEFAULT_VERSION: 1.15
+
+jobs:
+  test_linux:
+    needs: build
+    env:
+      B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
+      B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
+      NOPYBINDINGS: 1 # do not build python buildings
+    runs-on: ubuntu-18.04
+    container: 
+      image: ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        container:
+          - golang:1.16.5-buster
+          - golang:1.16.5-alpine3.14
+        terraform:
+          - 0.13.7
+          - 0.14.11
+          - 0.15.4
+          - 1.0.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download python bindings for given OS
+        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
+        uses: actions/download-artifact@v2
+        with:
+          name: py-terraform-provider-b2-${{ runner.os }}
+          path: python-bindings/dist/
+      - name: Run acceptance tests
+        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
+        timeout-minutes: 120
+        env:
+          TF_ACC_TERRAFORM_VERSION: ${{ matrix.terraform }}
+        run: |
+          make testacc
