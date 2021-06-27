@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: ${{ matrix.container }}
-    strategy:g
+    strategy:
       fail-fast: false
       matrix:
         container:
