@@ -34,6 +34,8 @@ jobs:
           - 1.0.0
     steps:
       - uses: actions/checkout@v2
+      - name: Check golang version
+        run: go version
       - name: Download python bindings for given OS
         if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         uses: actions/download-artifact@v2
