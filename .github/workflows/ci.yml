@@ -111,3 +111,44 @@ jobs:
           TF_ACC_TERRAFORM_VERSION: ${{ matrix.terraform }}
         run: |
           make testacc
+  
+  test_linux:
+    needs: build
+    env:
+      B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
+      B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
+      NOPYBINDINGS: 1 # do not build python buildings
+    runs-on: ubuntu-18.04
+    container: 
+      image: ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        container:
+          - alpine:3.14
+          - debian:buster-slim
+        terraform:
+          - 0.13.7
+          - 0.14.11
+          - 0.15.4
+          - 1.0.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go ${{ env.GO_DEFAULT_VERSION }}
+        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: ${{ env.GO_DEFAULT_VERSION }}
+      - name: Download python bindings for given OS
+        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
+        uses: actions/download-artifact@v2
+        with:
+          name: py-terraform-provider-b2-${{ runner.os }}
+          path: python-bindings/dist/
+      - name: Run acceptance tests
+        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
+        timeout-minutes: 120
+        env:
+          TF_ACC_TERRAFORM_VERSION: ${{ matrix.terraform }}
+        run: |
+          make testacc
