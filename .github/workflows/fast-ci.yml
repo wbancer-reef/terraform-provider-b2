@@ -68,7 +68,6 @@ jobs:
       - name: Check golang version
         run: go version
       - name: Download python bindings for given OS
-        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         uses: actions/download-artifact@v2
         with:
           name: py-terraform-provider-b2-${{ runner.os }}
