@@ -45,13 +45,13 @@ jobs:
           retention-days: 1
   test_linux:
     needs: build
-    env:
-      B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
-      B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
-      NOPYBINDINGS: 1 # do not build python buildings
     runs-on: ubuntu-18.04
     container: 
       image: ${{ matrix.container }}
+      env:
+        B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
+        B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
+        NOPYBINDINGS: 1 # do not build python buildings
     strategy:
       fail-fast: false
       matrix:
