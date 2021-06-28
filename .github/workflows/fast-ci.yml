@@ -46,6 +46,10 @@ jobs:
   test_linux:
     needs: build
     runs-on: ubuntu-18.04
+    env:
+      B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
+      B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
+      NOPYBINDINGS: 1 # do not build python buildings
     container: 
       image: ${{ matrix.container }}
     strategy:
