@@ -36,6 +36,9 @@ jobs:
       - name: Build the provider
         run: |
           make build
+      - name: check library dependencies
+        run: |
+          ldd python-bindings/dist/py-terraform-provider-b2
       - name: Upload python bindings
         uses: actions/upload-artifact@v2
         with:
@@ -77,6 +80,8 @@ jobs:
         with:
           name: py-terraform-provider-b2-${{ runner.os }}
           path: python-bindings/dist/
+      - name: Chech library linking
+        run: ldd python-bindings/dist/py-terraform-provider-b2-${{ runner.os }}
       - name: Run acceptance tests
         if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         timeout-minutes: 120
