@@ -27,8 +27,10 @@ clean:
 build:
 	@pyinstaller --log-level WARN --onefile ${SPEC}
 ifeq ($(UNAME_),Linux)
+	@echo "Making static lib version"
 	@mv dist/py-terraform-provider-b2 dist/py-terraform-provider-b2-linked
 	@staticx dist/py-terraform-provider-b2-linked dist/py-terraform-provider-b2
+	@ls -la dist/
 	@rm dist/py-terraform-provider-b2-linked
 endif
 ifneq ($(origin CI), undefined)
