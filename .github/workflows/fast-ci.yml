@@ -76,6 +76,7 @@ jobs:
           path: python-bindings/dist/
       - name: check library content
         run: ls -la python-bindings/dist/
+      - run: ls -la /tmp
       - name: Run acceptance tests
         if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         timeout-minutes: 120
