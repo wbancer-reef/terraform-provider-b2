@@ -58,8 +58,8 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          - golang:${{ env.GOLANG_DEFAULT_VERSION }}-alpine3.14
-          - golang:${{ env.GOLANG_DEFAULT_VERSION }}-buster
+          - golang:${{ env.GO_DEFAULT_VERSION }}-alpine3.14
+          - golang:${{ env.GO_DEFAULT_VERSION }}-buster
         terraform:
           - 1.0.0
     steps:
