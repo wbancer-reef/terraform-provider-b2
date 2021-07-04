@@ -2,7 +2,7 @@ name: Continuous Integration (fast)
 
 on:
   push:
-    branches: [workflow-updates]
+    branches: [master]
     paths-ignore:
       - 'README.md'
   pull_request:
