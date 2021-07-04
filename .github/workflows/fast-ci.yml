@@ -64,8 +64,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Add software dependencies
-        if: ${{ matrix.container == 'golang:1.16.5-alpine3.14' }}
-        run: apk add make gcc musl-dev
+        if: ${{ matrix.container == 'golang:1.15-alpine3.14' }}
+        run: apk add make gcc musl-dev bash
       - name: Download python bindings for given OS
         uses: actions/download-artifact@v2
         if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
