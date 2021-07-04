@@ -34,7 +34,7 @@ jobs:
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
       - name: Install dependencies
         run: |
-            source /root/.bashrc && make deps && ls -la /root/go/bin
+            source /root/.bashrc && make deps
       - name: Build provider
         run: |
             source /root/.bashrc && make build
@@ -58,7 +58,8 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          - golang:1.15-alpine3.14
+          - golang:${{ env.GOLANG_DEFAULT_VERSION }}-alpine3.14
+          - golang:${{ env.GOLANG_DEFAULT_VERSION }}-buster
         terraform:
           - 1.0.0
     steps:
@@ -73,9 +74,6 @@ jobs:
         with:
           name: py-terraform-provider-b2-${{ runner.os }}
           path: python-bindings/dist/
-      - name: check library content
-        run: ls -la python-bindings/dist/
-      - run: ls -la /tmp
       - name: Run acceptance tests
         if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         timeout-minutes: 120
