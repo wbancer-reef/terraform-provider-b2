@@ -32,14 +32,11 @@ jobs:
             rm go1.16.5.linux-amd64.tar.gz && mkdir /root/go && \
             echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
-            source /root/.bashrc && \
-            whoami && go version
+            source /root/.bashrc
       - name: Install dependencies
-        run: |
-          make deps
+        run: source /root/.bashrc && make deps
       - name: Build the provider
-        run: |
-          make build
+        run: source /root/,bashrc && make build
       - name: Upload python bindings
         uses: actions/upload-artifact@v2
         with:
