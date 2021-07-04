@@ -2,7 +2,7 @@ name: Continuous Integration (fast)
 
 on:
   push:
-    branches: [master, workflow-updates]
+    branches: [workflow-updates]
     paths-ignore:
       - 'README.md'
   pull_request:
@@ -13,20 +13,22 @@ env:
   GO_DEFAULT_VERSION: 1.15
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    container: "golang:1.15-buster"
+  build_linux:
+    runs-on: ubuntu-20.04
+    container: "python:3.9-buster"
     strategy:
       fail-fast: false
-      matrix:
-        os:
-          - ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ env.PYTHON_DEFAULT_VERSION }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ env.PYTHON_DEFAULT_VERSION }}
+      - run |
+          cd /usr/local && \
+          wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
+          tar xzf go1.16.5.linux-amd64.tar.gz && \
+          rm go1.16.5.linux-amd64.tar.gz && \
+          mkdir /root/go && \
+          echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
+          echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
+          source /root/.bashrc
       - name: Install dependencies
         run: |
           make deps
@@ -53,11 +55,8 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          - golang:1.15-buster
           - golang:1.15-alpine3.14
         terraform:
-          - 0.13.7
-          - 0.14.11
           - 0.15.4
           - 1.0.0
     steps:
