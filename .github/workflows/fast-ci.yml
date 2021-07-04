@@ -14,7 +14,7 @@ env:
 
 defaults:
   run:
-    shell: bash
+    shell: bash -l {0}
 
 jobs:
   build:
@@ -28,13 +28,16 @@ jobs:
         run: |
             cd /usr/local && \
             wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
-            tar xzf go1.16.5.linux-amd64.tar.gz && \
-            rm go1.16.5.linux-amd64.tar.gz && mkdir /root/go && \
+            tar xzf go1.15.13.linux-amd64.tar.gz && \
+            rm go1.15.13.linux-amd64.tar.gz && mkdir /root/go && \
             echo 'export GOPATH="/root/go"' >> /etc/.bashrc && \
-            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
-            source /root/.bashrc
+            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
+      - name: Install dependencies
+        run: |
+            make deps
       - name: Build provider
-        run: source /root/.bashrc && make deps && make build
+        run: |
+            make build
       - name: Upload python bindings
         uses: actions/upload-artifact@v2
         with:
