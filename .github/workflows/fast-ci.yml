@@ -34,10 +34,10 @@ jobs:
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
       - name: Install dependencies
         run: |
-            make deps
+            source /root/.bashrc && make deps
       - name: Build provider
         run: |
-            make build
+            source /root/.bashrc && make build
       - name: Upload python bindings
         uses: actions/upload-artifact@v2
         with:
