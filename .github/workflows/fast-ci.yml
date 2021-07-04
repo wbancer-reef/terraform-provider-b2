@@ -13,7 +13,7 @@ env:
   GO_DEFAULT_VERSION: 1.15
 
 jobs:
-  build_linux:
+  build:
     runs-on: ubuntu-20.04
     container: "python:3.9-buster"
     strategy:
@@ -21,14 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Configure environment
-        run: cd /usr/local
-      - run: wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz
-      - run: tar xzf go1.16.5.linux-amd64.tar.gz
-      - run: rm go1.16.5.linux-amd64.tar.gz
-      - run: mkdir /root/go
-      - run: echo 'export GOPATH="/root/go"' >> /root/.bashrc
-      - run: echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
-      - run: source /root/.bashrc
+        run: |
+            cd /usr/local && \
+            wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
+            tar xzf go1.16.5.linux-amd64.tar.gz && \
+            rm go1.16.5.linux-amd64.tar.gz && mkdir /root/go && \
+            echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
+            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
+            source /root/.bashrc
       - name: Install dependencies
         run: |
           make deps
