@@ -32,7 +32,8 @@ jobs:
             rm go1.16.5.linux-amd64.tar.gz && mkdir /root/go && \
             echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
-            source /root/.bashrc
+            source /root/.bashrc && \
+            whoami && go version
       - name: Install dependencies
         run: |
           make deps
