@@ -30,11 +30,11 @@ jobs:
             wget -q https://golang.org/dl/go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
             tar xzf go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
             rm go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && mkdir /root/go && \
-            echo 'export GOPATH="/root/go"' >> /etc/.bashrc && \
-            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
+            echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
+            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
       - name: Install dependencies
         run: |
-            source /root/.bashrc && make deps && ls -la /root/go/bin
+            make deps && ls -la /root/go/bin
       - name: Build provider
         run: |
             source /root/.bashrc && make build
