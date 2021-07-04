@@ -10,7 +10,7 @@ on:
 
 env:
   PYTHON_DEFAULT_VERSION: 3.9
-  GO_DEFAULT_VERSION: 1.15
+  GO_DEFAULT_VERSION: 1.15.13
 
 defaults:
   run:
@@ -27,9 +27,9 @@ jobs:
       - name: Configure environment
         run: |
             cd /usr/local && \
-            wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
-            tar xzf go1.15.13.linux-amd64.tar.gz && \
-            rm go1.15.13.linux-amd64.tar.gz && mkdir /root/go && \
+            wget -q https://golang.org/dl/go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
+            tar xzf go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
+            rm go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && mkdir /root/go && \
             echo 'export GOPATH="/root/go"' >> /etc/.bashrc && \
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
       - name: Install dependencies
