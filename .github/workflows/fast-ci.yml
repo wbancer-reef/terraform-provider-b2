@@ -12,6 +12,10 @@ env:
   PYTHON_DEFAULT_VERSION: 3.9
   GO_DEFAULT_VERSION: 1.15
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -21,7 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Configure environment
-        shell: bash
         run: |
             cd /usr/local && \
             wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
@@ -31,11 +34,9 @@ jobs:
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
             source /root/.bashrc
       - name: Install dependencies
-        shell: bash
         run: |
           make deps
       - name: Build the provider
-        shell: bash
         run: |
           make build
       - name: Upload python bindings
