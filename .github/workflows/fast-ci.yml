@@ -34,7 +34,7 @@ jobs:
             echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc
       - name: Install dependencies
         run: |
-            source /root/.bashrc && make deps
+            source /root/.bashrc && make deps && ls -la /root/go/bin
       - name: Build provider
         run: |
             source /root/.bashrc && make build
