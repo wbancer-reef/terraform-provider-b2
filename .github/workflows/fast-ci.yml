@@ -11,6 +11,8 @@ on:
 env:
   PYTHON_DEFAULT_VERSION: 3.9
   GO_DEFAULT_VERSION: 1.15.13
+  PATH: /go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  GOPATH: /go
 
 jobs:
   build:
@@ -25,9 +27,7 @@ jobs:
             cd /usr/local && \
             wget -q https://golang.org/dl/go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
             tar xzf go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && \
-            rm go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && mkdir /root/go && \
-            echo 'export GOPATH="/root/go"' >> /etc/profile && \
-            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /etc/profile
+            rm go${{ env.GO_DEFAULT_VERSION }}.linux-amd64.tar.gz && mkdir /go
       - name: Install dependencies
         run: make deps
       - name: Build provider
