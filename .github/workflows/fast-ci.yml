@@ -30,13 +30,13 @@ jobs:
             wget -q https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
             tar xzf go1.16.5.linux-amd64.tar.gz && \
             rm go1.16.5.linux-amd64.tar.gz && mkdir /root/go && \
-            echo 'export GOPATH="/root/go"' >> /root/.bashrc && \
-            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /root/.bashrc && \
-            source /root/.bashrc
+            echo 'export GOPATH="/root/go"' >> /etc/bash_profile && \
+            echo 'export PATH="/root/go/bin:/usr/local/go/bin:$PATH"' >> /etc/bash_profile && \
+            source /etc/bash_profile
       - name: Install dependencies
-        run: source /root/.bashrc && make deps
+        run: make deps
       - name: Build the provider
-        run: source /root/,bashrc && make build
+        run: make build
       - name: Upload python bindings
         uses: actions/upload-artifact@v2
         with:
